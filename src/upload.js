@@ -107,11 +107,11 @@
   }
 
   resizeX.onchange = function(){
-    if(validValue() && resizeFormIsValid()){
-      removeDisabled(resizeX);
-    } else{
-
+    if(validValue(resizeX.value)){
+      resizeFormIsValid();
+      return;
     }
+    removeDisabled(resizeX);
   };
 
   /**
@@ -119,12 +119,7 @@
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    if(parseInt(resizeX.value) + parseInt(resizeSide.value) <= currentResizer._image.naturalWidth){
-      console.log(parseInt(resizeX.value) + parseInt(resizeSide.value));
-      return true;
-    }
-    console.log(parseInt(resizeX.value) + parseInt(resizeSide.value));
-    return true;
+    
   }
 
   /**
