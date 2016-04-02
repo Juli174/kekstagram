@@ -70,56 +70,92 @@
   var resizeX = document.querySelector('#resize-x');
   var resizeY = document.querySelector('#resize-y');
   var resizeSide = document.querySelector('#resize-size');
+  var resizeFwd = document.querySelector('#resize-fwd');
+
+  resizeX.value = 105;
+  resizeY.value = 40;
+  resizeSide.value = 240;
 
   /**
   * Проверяет валидность введенного значения, значение - длина
+  * @param {HTMLInputElement} element
   * @return {boolean}
   */
-  function validValue(value){
+  function validValue(element){
+    var value = element.value;
     if(!value || value < 0){
       return false;
     } 
     return true;
   }
 
+
   /**
-  * Добавляет элементу атрибут disabled
-  * @param {HTMLInputElement} element
+  * Добавляет resizeFwd атрибут disabled
   */
 
-  function setDisabled(element){
-    var current = element.hasAttribute("disabled");
+  function setDisabled(){
+    var current = resizeFwd.hasAttribute('disabled');
     if(!current){
-      element.setAttribute("disabled", "disabled");
+      resizeFwd.setAttribute('disabled', 'disabled');
+      for(var i = 0; i < resizeFwd.classList.length; i++){
+        if(resizeFwd.classList[i] == 'disabled'){
+          return;
+        }
+      }
+      resizeFwd.classList.add('disabled');
     }
   }
 
   /**
-  * Удаляет у элемента атрибут disabled
-  * @param {HTMLInputElement} element
+  * Удаляет у resizeFwd атрибут disabled
   */
 
-  function removeDisabled(element){
-    var current = element.hasAttribute("disabled");
+  function removeDisabled(){
+    var current = resizeFwd.hasAttribute('disabled');
     if(current){
-      element.removeAttriute("disabled");
+      resizeFwd.removeAttribute('disabled');
+      resizeFwd.classList.remove('disabled');
     }
   }
 
   resizeX.onchange = function(){
-    if(validValue(resizeX.value)){
-      resizeFormIsValid();
-      return;
-    }
-    removeDisabled(resizeX);
+    resizeFormIsValid();
+  };
+
+  resizeY.onchange = function(){
+    resizeFormIsValid();
+  };
+
+  resizeSide.onchange = function(){
+    resizeFormIsValid();
   };
 
   /**
+  * Проверяет валидность первых двух условий
+  * @param {HTMLInputElement} element
+  * @param {Ыекштп} size
+  * @return {boolean}
+  */
+
+  function validResize(element, size){
+    if(parseInt(element.value) + parseInt(resizeSide.value) <= size){
+      return true;
+    } 
+    return false;
+  }
+
+  /**
    * Проверяет, валидны ли данные, в форме кадрирования.
-   * @return {boolean}
    */
   function resizeFormIsValid() {
-    
+    if(!validValue(resizeSide)){
+      setDisabled();
+    } else if(validResize(resizeX, currentResizer._image.naturalWidth) && validResize(resizeY, currentResizer._image.naturalHeight) && validValue(resizeX) && validValue(resizeY)){
+      removeDisabled();
+    } else{
+      setDisabled();
+    }
   }
 
   /**
