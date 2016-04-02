@@ -1,4 +1,4 @@
-function getMessage(a, b){
+window.getMessage = function(a, b){
   if(typeof a === "boolean"){
     if(a){
       return "Переданное GIF-изображение анимировано и содержит " + b + " кадров";

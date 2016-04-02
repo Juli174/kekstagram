@@ -67,11 +67,63 @@
     backgroundElement.style.backgroundImage = 'url(' + images[randomImageNumber] + ')';
   }
 
+  var resizeX = document.querySelector('#resize-x');
+  var resizeY = document.querySelector('#resize-y');
+  var resizeSide = document.querySelector('#resize-size');
+
+  /**
+  * Проверяет валидность введенного значения, значение - длина
+  * @return {boolean}
+  */
+  function validValue(value){
+    if(!value || value < 0){
+      return false;
+    } 
+    return true;
+  }
+
+  /**
+  * Добавляет элементу атрибут disabled
+  * @param {HTMLInputElement} element
+  */
+
+  function setDisabled(element){
+    var current = element.hasAttribute("disabled");
+    if(!current){
+      element.setAttribute("disabled", "disabled");
+    }
+  }
+
+  /**
+  * Удаляет у элемента атрибут disabled
+  * @param {HTMLInputElement} element
+  */
+
+  function removeDisabled(element){
+    var current = element.hasAttribute("disabled");
+    if(current){
+      element.removeAttriute("disabled");
+    }
+  }
+
+  resizeX.onchange = function(){
+    if(validValue() && resizeFormIsValid()){
+      removeDisabled(resizeX);
+    } else{
+
+    }
+  };
+
   /**
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
   function resizeFormIsValid() {
+    if(parseInt(resizeX.value) + parseInt(resizeSide.value) <= currentResizer._image.naturalWidth){
+      console.log(parseInt(resizeX.value) + parseInt(resizeSide.value));
+      return true;
+    }
+    console.log(parseInt(resizeX.value) + parseInt(resizeSide.value));
     return true;
   }
 
