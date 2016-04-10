@@ -8,6 +8,7 @@
 'use strict';
 
 (function() {
+  var cookies = require('browser-cookies');
   /** @enum {string} */
   var FileType = {
     'GIF': '',
@@ -153,9 +154,47 @@
       setDisabled();
     } else if(validResize(resizeX, currentResizer._image.naturalWidth) && validResize(resizeY, currentResizer._image.naturalHeight) && validValue(resizeX) && validValue(resizeY)){
       removeDisabled();
+      return true;
     } else{
       setDisabled();
     }
+  }
+
+  /**
+  * cookies
+  */
+  var filterNone = document.querySelector('#upload-filter-none');
+  var filterChrome = document.querySelector('#upload-filter-chrome');
+  var filterSepia = document.querySelector('#upload-filter-sepia');
+
+  filterNone.onclick = function(){
+    setCokkies('none');
+  };
+
+  filterChrome.onclick = function(){
+    setCokkies('chrome');
+  };
+
+  filterSepia.onclick = function(){
+    setCokkies('sepia');
+  };
+
+  function setExpire(){
+    var today = new Date();
+    var day = '-08-09';
+    var thisYear = new Date(today.getFullYear() + day);
+    var current;
+    if(thisYear.valueOf() - today.valueOf() < 0){
+      var lastYear = new Date((today.getFullYear() - 1) + day).valueOf();
+      current = new Date(lastYear).toUTCString();
+    } else{
+      current = new Date(thisYear).toUTCString();
+    }
+    return current;
+  }
+
+  function setCokkies(name){
+    cookies.set('filter', name, {expires: setExpire()});
   }
 
   /**
@@ -281,6 +320,9 @@
       filterImage.src = currentResizer.exportImage().src;
 
       resizeForm.classList.add('invisible');
+      var filterValue = cookies.get('filter');
+      document.getElementById('upload-filter-' + filterValue).checked = true;
+      filterImage.className = 'filter-image-preview filter-' + filterValue;
       filterForm.classList.remove('invisible');
     }
   };
