@@ -200,6 +200,7 @@ body {
 
 .upload-form-controls-fwd.disabled{
   background: rgb(106, 109, 106) url("../img/icon-arrow.png") center no-repeat;
+  cursor: default;
 }
 
 .upload-resize canvas {

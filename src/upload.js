@@ -7,6 +7,7 @@
 
 'use strict';
 
+
 (function() {
   /** @enum {string} */
   var FileType = {
@@ -82,7 +83,7 @@
   * @return {boolean}
   */
   function validValue(element){
-    var value = element.value;
+    var value = parseInt(element.value);
     if(!value || value < 0){
       return false;
     } 
@@ -119,15 +120,15 @@
     }
   }
 
-  resizeX.onchange = function(){
+  resizeX.oninput = function(){
     resizeFormIsValid();
   };
 
-  resizeY.onchange = function(){
+  resizeY.oninput = function(){
     resizeFormIsValid();
   };
 
-  resizeSide.onchange = function(){
+  resizeSide.oninput = function(){
     resizeFormIsValid();
   };
 
@@ -147,12 +148,14 @@
 
   /**
    * Проверяет, валидны ли данные, в форме кадрирования.
+   * @return {boolean}
    */
   function resizeFormIsValid() {
     if(!validValue(resizeSide)){
       setDisabled();
     } else if(validResize(resizeX, currentResizer._image.naturalWidth) && validResize(resizeY, currentResizer._image.naturalHeight) && validValue(resizeX) && validValue(resizeY)){
       removeDisabled();
+      return true;
     } else{
       setDisabled();
     }
