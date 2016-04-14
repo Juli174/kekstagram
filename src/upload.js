@@ -168,23 +168,23 @@
   var filterSepia = document.querySelector('#upload-filter-sepia');
 
   filterNone.onclick = function(){
-    setCokkies('none');
+    setCookie('none');
   };
 
   filterChrome.onclick = function(){
-    setCokkies('chrome');
+    setCookie('chrome');
   };
 
   filterSepia.onclick = function(){
-    setCokkies('sepia');
+    setCookie('sepia');
   };
 
-  function setExpire(){
+  function getExpirationDate(){
     var today = new Date();
     var day = '-08-09';
     var thisYear = new Date(today.getFullYear() + day);
     var current;
-    if(thisYear.valueOf() - today.valueOf() < 0){
+    if(thisYear.valueOf() - today.valueOf() <= 0){
       var lastYear = new Date((today.getFullYear() - 1) + day).valueOf();
       current = new Date(lastYear).toUTCString();
     } else{
@@ -193,8 +193,8 @@
     return current;
   }
 
-  function setCokkies(name){
-    cookies.set('filter', name, {expires: setExpire()});
+  function setCookie(name){
+    cookies.set('filter', name, {expires: getExpirationDate()});
   }
 
   /**
@@ -319,8 +319,14 @@
     if (resizeFormIsValid()) {
       filterImage.src = currentResizer.exportImage().src;
 
+      var filters = ['none', 'chrome', 'sepia'];
+
       resizeForm.classList.add('invisible');
       var filterValue = cookies.get('filter');
+      var exist = filters.some(function(element){
+        return element == filterValue;
+      });
+      if(!exist) return;
       document.getElementById('upload-filter-' + filterValue).checked = true;
       filterImage.className = 'filter-image-preview filter-' + filterValue;
       filterForm.classList.remove('invisible');
