@@ -326,7 +326,9 @@
       var exist = filters.some(function(element){
         return element == filterValue;
       });
-      if(!exist) return;
+      if(!exist) {
+        filterValue = 'none';
+      }
       document.getElementById('upload-filter-' + filterValue).checked = true;
       filterImage.className = 'filter-image-preview filter-' + filterValue;
       filterForm.classList.remove('invisible');
