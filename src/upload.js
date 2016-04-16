@@ -326,10 +326,13 @@
       var exist = filters.some(function(element){
         return element == filterValue;
       });
+      var id;
       if(!exist) {
-        filterValue = 'none';
+        id = document.querySelector('.upload-filter-controls > input:checked').id;
+      } else{
+        id = 'upload-filter-' + filterValue
       }
-      document.getElementById('upload-filter-' + filterValue).checked = true;
+      document.getElementById(id).checked = true;
       filterImage.className = 'filter-image-preview filter-' + filterValue;
       filterForm.classList.remove('invisible');
     }
